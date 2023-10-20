@@ -1,3 +1,9 @@
+// Check the conf
+// https://publint.dev
+
+import fs from 'fs'
+import path from 'path'
+
 // Where are we?
 const packageDirPath = process.cwd()
 
@@ -8,10 +14,11 @@ const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'))
 // rewrite package.json te be in the right order!
 fs.writeFileSync(
   packageJsonPath,
-  JSON.stringify(
+  `${JSON.stringify(
     {
       name: pkg.name,
       description: pkg.description ?? 'Missing!!!',
+      keywords: pkg.keywords ?? ['Missing!!!'],
       version: pkg.version,
       license: 'MIT',
       type: 'module',
@@ -36,13 +43,15 @@ fs.writeFileSync(
       types: pkg.types ?? './dist/index.d.ts',
       exports: {
         '.': {
-          types: pkg.types ?? './dist/index.d.ts',
-          default: pkg.default ?? './dist/index.js',
-          svelte: pkg.svelte ?? './dist/index.js',
+          types: pkg.exports?.types ?? './dist/index.d.ts',
+          svelte: pkg.exports?.svelte ?? './dist/index.js',
+          require: pkg.exports?.require ?? './dist/index.cjs', // CJS
+          // import: pkg.import ?? './dist/index.js', // ESM,
+          default: pkg.exports?.default ?? './dist/index.js', // Sould be last and should default to ESM
         },
       },
     },
     null,
     2,
-  ),
+  )}\n`,
 )
