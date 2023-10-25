@@ -16,6 +16,7 @@ export default defineConfig({
     ]),
     watchAndRun([{ name: 'Yop NOK', run: 'exit(1)', watch: path.resolve('src/**/*.svelte') }]),
   ],
+  // @ts-ignore
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}'],
   },
