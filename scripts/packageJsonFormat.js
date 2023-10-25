@@ -30,9 +30,9 @@ fs.writeFileSync(
           pkg.repository?.homepage ?? 'https://github.com/jycouet/kitql/tree/main/packages/???',
       },
       scripts: pkg.scripts,
-      peerDependencies: pkg.peerDependencies,
-      devDependencies: pkg.devDependencies,
-      dependencies: pkg.dependencies,
+      peerDependencies: Object.fromEntries(Object.entries(pkg.peerDependencies ?? {}).sort()),
+      devDependencies: Object.fromEntries(Object.entries(pkg.devDependencies ?? {}).sort()),
+      dependencies: Object.fromEntries(Object.entries(pkg.dependencies ?? {}).sort()),
       sideEffects: pkg.sideEffects ?? false, // Key for  tree shaking!
       publishConfig: {
         directory: pkg.publishConfig?.directory ?? 'dist',
